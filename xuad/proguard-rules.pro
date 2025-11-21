@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.xcw.xuad.XuAdManager { *; }
+-keep class com.xcw.xuad.ad.RealTimeMonitoring { *; }
+-keep class com.xcw.xuad.utils.WeatherUtils { *; }
+-keep class com.xcw.xuad.log.XuLog { *; }
