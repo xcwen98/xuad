@@ -8,7 +8,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 
-object AppApi {
+object ApiService {
     private val client = NetworkConfig.client
     private val json = NetworkConfig.json
     private const val CONTENT_TYPE = "application/json; charset=utf-8"
