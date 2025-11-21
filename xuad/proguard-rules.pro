@@ -28,3 +28,5 @@
 -keep class com.xcw.xuad.network.ApiService { *; }
 -keep class com.xcw.xuad.network.entity.ApiResult { *; }
 -keep class com.xcw.xuad.network.entity.AppFeedbackRequest { *; }
+-keep interface com.xcw.xuad.InitCallback { *; }
+-keep class com.xcw.xuad.InitStep { *; }
