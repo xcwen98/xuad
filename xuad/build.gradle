@@ -1,0 +1,132 @@
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
+    id 'maven-publish'
+    id 'signing'
+}
+
+android {
+    namespace 'com.xcw.xuad'
+    compileSdk {
+        version = release(36)
+    }
+
+    defaultConfig {
+        minSdk 26
+
+        buildConfigField "String", "WEBURL", '"https://jiangxixcwkj.com"'
+        buildConfigField "String", "APIURL", '"https://leihe.jiangxixcwkj.com"'
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+        // 穿山甲SDK仅支持armeabi-v7a和arm64-v8a两种架构
+        ndk {
+            // 设置支持的 SO 库构架
+            //noinspection ChromeOsAbiSupport
+            abiFilters  'arm64-v8a'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+    buildFeatures {
+        compose true
+        buildConfig true
+    }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+}
+
+dependencies {
+    // kt基础库
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.activity.compose
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.androidx.lifecycle.process
+    //===========
+    // Compose BOM
+    implementation platform(libs.androidx.compose.bom)
+    // Compose UI 依赖
+    implementation libs.androidx.ui
+    implementation libs.androidx.ui.graphics
+    implementation libs.androidx.material3
+    // 注意：androidx.activity.compose 已经在上面声明过了
+    // 支持 @Preview 注解
+    implementation libs.androidx.ui.tooling.preview
+    // 支持交互式预览和布局检查器
+    debugImplementation libs.androidx.ui.tooling
+    // 移除了测试相关的 manifest 依赖
+    //===========
+    // JSON解析库
+    implementation libs.kotlinx.serialization.json
+    // 友盟基础组件库（所有友盟业务SDK都依赖基础组件库
+    implementation  libs.common// 必选
+    implementation  libs.asms// 必选
+    //穿山甲融合SDK
+    implementation libs.mediation.sdk
+    //网络请求
+    implementation libs.okhttp
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = project.group
+                artifactId = 'xuad'
+                version = project.version
+                pom {
+                    name = 'XUAD'
+                    description = 'Android Ad SDK'
+                    url = findProperty('POM_URL') ?: 'https://jiangxixcwkj.com'
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution = 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = findProperty('POM_DEVELOPER_ID') ?: 'xcw'
+                            name = findProperty('POM_DEVELOPER_NAME') ?: 'xcw'
+                            email = findProperty('POM_DEVELOPER_EMAIL') ?: 'support@jiangxixcwkj.com'
+                        }
+                    }
+                    scm {
+                        connection = findProperty('POM_SCM_CONNECTION') ?: ''
+                        developerConnection = findProperty('POM_SCM_DEV_CONNECTION') ?: ''
+                        url = findProperty('POM_SCM_URL') ?: ''
+                    }
+                }
+            }
+        }
+    }
+}
+
+def hasSigning = project.hasProperty('signing.keyId') || project.hasProperty('signing.secretKeyRingFile') || project.hasProperty('signingKey')
+if (hasSigning) {
+    signing {
+        sign publishing.publications
+    }
+}

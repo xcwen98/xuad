@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- 允许所有HTTP流量，解决广告图片加载问题 -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+    
+    <!-- 自定义域名配置 -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">jiangxixcwkj.com</domain>
+        <domain includeSubdomains="true">leihe.jiangxixcwkj.com</domain>
+        <!-- 穿山甲广告相关域名 -->
+        <domain includeSubdomains="true">pangle.io</domain>
+        <domain includeSubdomains="true">pangolin-sdk-toutiao.com</domain>
+        <domain includeSubdomains="true">pangolin-sdk-toutiao-b.com</domain>
+        <domain includeSubdomains="true">bytedance.com</domain>
+        <domain includeSubdomains="true">byteimg.com</domain>
+        <domain includeSubdomains="true">snssdk.com</domain>
+        <domain includeSubdomains="true">toutiao.com</domain>
+        <domain includeSubdomains="true">toutiaoimg.com</domain>
+        <domain includeSubdomains="true">toutiaoapi.com</domain>
+        <domain includeSubdomains="true">bytegoofy.com</domain>
+        <domain includeSubdomains="true">byteorge.com</domain>
+        <domain includeSubdomains="true">bytescm.com</domain>
+    </domain-config>
+</network-security-config>
