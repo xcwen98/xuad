@@ -7,7 +7,7 @@ import android.os.Looper
 import com.xcw.xuad.ad.AdStrategy
 import com.xcw.xuad.log.XuLog
 import com.xcw.xuad.ad.TTAdManagerHolder
-import com.xcw.xuad.network.AppApi
+import com.xcw.xuad.network.ApiService
 import com.xcw.xuad.network.entity.ApiResult
 import com.xcw.xuad.network.entity.AppInitRequest
 import com.xcw.xuad.network.entity.AppInitResponse
@@ -128,7 +128,7 @@ object XuAdManager {
         
         Thread {
             try {
-                val res = AppApi.init(
+                val res = ApiService.init(
                     AppInitRequest(
                         packageName = ctx.packageName,
                         channelName = ctx.channelName,
@@ -262,7 +262,7 @@ object XuAdManager {
         // 同步执行策略校验：如果当前在主线程，则切到后台线程执行并阻塞等待
         val task = {
             try {
-                val checkRes = AppApi.checkAdStrategy(
+                val checkRes = ApiService.checkAdStrategy(
                     AppUserInitRequest(
                         packageName = ctx.packageName,
                         channelName = ctx.channelName,

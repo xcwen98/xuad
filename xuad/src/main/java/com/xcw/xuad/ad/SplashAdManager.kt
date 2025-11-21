@@ -10,7 +10,7 @@ import com.bytedance.sdk.openadsdk.CSJAdError
 import com.bytedance.sdk.openadsdk.CSJSplashAd
 import com.xcw.xuad.XuAdManager
 import com.xcw.xuad.log.XuLog
-import com.xcw.xuad.network.AppApi
+import com.xcw.xuad.network.ApiService
 import com.xcw.xuad.network.entity.AppRecordRequest
 import android.os.Build
 
@@ -38,7 +38,7 @@ object SplashAdManager {
             deviceInfo = buildDeviceInfo()
         )
         kotlin.concurrent.thread(start=true) {
-            runCatching { AppApi.record(req) }
+            runCatching { ApiService.record(req) }
                 .onFailure { XuLog.e("record 接口调用失败: ${it}") }
         }
     }
