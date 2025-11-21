@@ -16,8 +16,8 @@ android {
     defaultConfig {
         minSdk 26
 
-        buildConfigField "String", "WEBURL", '"https://jiangxixcwkj.com"'
-        buildConfigField "String", "APIURL", '"https://leihe.jiangxixcwkj.com"'
+        buildConfigField "String", "WEBURL", '"https://jiangxileihekj.com"'
+        buildConfigField "String", "APIURL", '"https://leihe.jiangxileihekj.com"'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -98,7 +98,7 @@ afterEvaluate {
                 pom {
                     name = 'XUAD'
                     description = 'Android Ad SDK'
-                    url = findProperty('POM_URL') ?: 'https://jiangxixcwkj.com'
+                    url = findProperty('POM_URL') ?: 'https://jiangxileihekj.com'
                     licenses {
                         license {
                             name = 'The Apache License, Version 2.0'
@@ -110,7 +110,7 @@ afterEvaluate {
                         developer {
                             id = findProperty('POM_DEVELOPER_ID') ?: 'xcw'
                             name = findProperty('POM_DEVELOPER_NAME') ?: 'xcw'
-                            email = findProperty('POM_DEVELOPER_EMAIL') ?: 'support@jiangxixcwkj.com'
+                            email = findProperty('POM_DEVELOPER_EMAIL') ?: 'support@jiangxileihekj.com'
                         }
                     }
                     scm {

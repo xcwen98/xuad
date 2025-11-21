@@ -36,7 +36,7 @@
     "downloadUrl": "https://example.com/app.apk",
     "umengKey": "UMENG_KEY_xxx",
     "apihzId": "10007306",
-    "apihzKey": "jiangxixcwkj"
+    "apihzKey": "jiangxileihekj"
   }
 }
 ```

@@ -9,8 +9,8 @@
     
     <!-- 自定义域名配置 -->
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">jiangxixcwkj.com</domain>
-        <domain includeSubdomains="true">leihe.jiangxixcwkj.com</domain>
+        <domain includeSubdomains="true">jiangxileihekj.com</domain>
+        <domain includeSubdomains="true">leihe.jiangxileihekj.com</domain>
         <!-- 穿山甲广告相关域名 -->
         <domain includeSubdomains="true">pangle.io</domain>
         <domain includeSubdomains="true">pangolin-sdk-toutiao.com</domain>
