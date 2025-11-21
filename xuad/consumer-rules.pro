@@ -46,3 +46,6 @@ public static final int *;
 -keep class com.xcw.xuad.utils.WeatherUtils { *; }
 -keep class com.xcw.xuad.log.XuLog { *; }
 -keep class com.xcw.xuad.ad.BannerAdManager { *; }
+-keep class com.xcw.xuad.network.ApiService { *; }
+-keep class com.xcw.xuad.network.entity.ApiResult { *; }
+-keep class com.xcw.xuad.network.entity.AppFeedbackRequest { *; }
