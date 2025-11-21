@@ -45,3 +45,4 @@ public static final int *;
 -keep class com.xcw.xuad.ad.RealTimeMonitoring { *; }
 -keep class com.xcw.xuad.utils.WeatherUtils { *; }
 -keep class com.xcw.xuad.log.XuLog { *; }
+-keep class com.xcw.xuad.ad.BannerAdManager { *; }
