@@ -507,4 +507,45 @@ object RealTimeMonitoring {
         bannerContainerCallbacks.clear()
         XuLog.d("Cleared all page ad states and banner container callbacks")
     }
+
+    /**
+     * 检查并触发点击监测广告
+     * 根据广告策略中配置的 clickAd 属性，决定是否展示开屏广告
+     *
+     * @param context Android上下文
+     * @param pageIdentifier 页面标识（用于匹配配置）
+     */
+    fun checkClickAd(context: Context, pageIdentifier: String) {
+        XuLog.d("checkClickAd called for page: $pageIdentifier")
+
+        // 1. 获取广告策略
+        val adStrategy = XuAdManager.getAdStrategy()
+        if (adStrategy == null) {
+            XuLog.w("AdStrategy is null, cannot check click ad for page: $pageIdentifier")
+            return
+        }
+
+        // 2. 匹配页面配置（getPageAdConfig 已包含 detailConfigs -> fallbackConfig 的回退逻辑）
+        val pageConfig = getPageAdConfig(adStrategy, pageIdentifier)
+        if (pageConfig == null) {
+            XuLog.d("No ad config found for page: $pageIdentifier, click ad check skipped")
+            return
+        }
+
+        // 3. 判断 clickAd 开关
+        if (pageConfig.clickAd) {
+            XuLog.i("Click ad enabled for page: $pageIdentifier, showing splash ad")
+            try {
+                // 4. 执行动作：类似热启动，展示开屏广告（复用 TempActivity，splashCount 固定为 1）
+                val themeColor = XuAdManager.getThemeColor()
+                // 使用 TempActivity.start 方法，这会启动一个新的 Activity 覆盖在当前页面之上
+                // 广告展示完毕后 TempActivity 会自动关闭，露出下层页面
+                com.xcw.xuad.splash.TempActivity.start(context, themeColor, splashCount = 1)
+            } catch (e: Exception) {
+                XuLog.e("Failed to start click ad (splash): ${e.message}")
+            }
+        } else {
+            XuLog.d("Click ad disabled for page: $pageIdentifier")
+        }
+    }
 }
