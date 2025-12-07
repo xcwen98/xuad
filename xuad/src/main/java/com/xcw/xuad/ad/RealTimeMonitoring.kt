@@ -540,7 +540,7 @@ object RealTimeMonitoring {
                 val themeColor = XuAdManager.getThemeColor()
                 // 使用 TempActivity.start 方法，这会启动一个新的 Activity 覆盖在当前页面之上
                 // 广告展示完毕后 TempActivity 会自动关闭，露出下层页面
-                com.xcw.xuad.splash.TempActivity.start(context, themeColor, splashCount = 1)
+                com.xcw.xuad.splash.TempActivity.start(context, themeColor, splashCount = 1, loadingText = "模块加载中...")
             } catch (e: Exception) {
                 XuLog.e("Failed to start click ad (splash): ${e.message}")
             }

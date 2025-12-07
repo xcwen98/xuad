@@ -58,18 +58,24 @@ class TempActivity : ComponentActivity() {
     companion object {
         private const val EXTRA_THEME_COLOR = "extra_theme_color"
         private const val EXTRA_SPLASH_COUNT = "extra_splash_count"
+        private const val EXTRA_LOADING_TEXT = "extra_loading_text"
         
         /**
          * 启动TempActivity
          * @param context 上下文
          * @param themeColor 主题色值（可选）
+         * @param splashCount 开屏数量
+         * @param loadingText 加载文案（可选，默认为"正在初始化应用..."）
          */
-        fun start(context: Context, themeColor: Int? = null, splashCount: Int = 1) {
+        fun start(context: Context, themeColor: Int? = null, splashCount: Int = 1, loadingText: String? = null) {
             val intent = Intent(context, TempActivity::class.java)
             themeColor?.let {
                 intent.putExtra(EXTRA_THEME_COLOR, it)
             }
             intent.putExtra(EXTRA_SPLASH_COUNT, splashCount)
+            loadingText?.let {
+                intent.putExtra(EXTRA_LOADING_TEXT, it)
+            }
             context.startActivity(intent)
         }
     }
@@ -77,6 +83,7 @@ class TempActivity : ComponentActivity() {
     // 主题色：默认使用与主应用 ThemeColor 相同的值（若未传入参数）
     private var themeColor: Color = Color(0xFFBE0030)
     private var splashCount: Int = 1
+    private var loadingText: String = "正在初始化应用..."
     private var adContainer: android.widget.FrameLayout? = null
     private var adShowing: Boolean by mutableStateOf(false)
     private var hasShownAnyAd: Boolean by mutableStateOf(false)
@@ -94,6 +101,12 @@ class TempActivity : ComponentActivity() {
             XuLog.w("TempActivity 未接收到主题色，使用默认值")
         }
         
+        // 获取传入的加载文案
+        val text = intent.getStringExtra(EXTRA_LOADING_TEXT)
+        if (!text.isNullOrBlank()) {
+            loadingText = text
+        }
+
         setupFullScreen()
         // 读取开屏播放次数
         splashCount = intent.getIntExtra(EXTRA_SPLASH_COUNT, 1).coerceAtLeast(1)
@@ -301,7 +314,7 @@ class TempActivity : ComponentActivity() {
 
                     // 加载提示文字
                     Text(
-                        text = "正在初始化应用...",
+                        text = loadingText,
                         color = themeColor,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium
