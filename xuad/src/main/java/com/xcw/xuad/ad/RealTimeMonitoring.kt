@@ -45,9 +45,10 @@ object RealTimeMonitoring {
      * 
      * @param context Android上下文
      * @param pageIdentifier 页面标识字符串
+     * @param showLoading 是否显示加载Loading弹窗，默认为true
      */
-    fun XuTrack(context: Context, pageIdentifier: String) {
-        XuLog.d("XuTrack called for page: $pageIdentifier")
+    fun XuTrack(context: Context, pageIdentifier: String, showLoading: Boolean = true) {
+        XuLog.d("XuTrack called for page: $pageIdentifier, showLoading: $showLoading")
         
         // 获取广告策略
         val adStrategy = XuAdManager.getAdStrategy()
@@ -76,7 +77,7 @@ object RealTimeMonitoring {
         
         // 执行插屏广告策略（仅在全局启用时）
         if (adStrategy.globalInterstitialEnabled) {
-            executeInterstitialStrategy(context, pageState, pageConfig, adStrategy)
+            executeInterstitialStrategy(context, pageState, pageConfig, adStrategy, showLoading)
         } else {
             XuLog.d("Global interstitial ads disabled, skipping interstitial for page: $pageIdentifier")
         }
@@ -147,12 +148,14 @@ object RealTimeMonitoring {
      * @param pageState 页面状态
      * @param pageConfig 页面广告配置
      * @param adStrategy 全局广告策略
+     * @param showLoading 是否显示加载Loading弹窗
      */
     private fun executeInterstitialStrategy(
         context: Context,
         pageState: PageAdState,
         pageConfig: AdPageConfig,
-        adStrategy: AdStrategy
+        adStrategy: AdStrategy,
+        showLoading: Boolean
     ) {
         val targetCount = pageConfig.interstitialCount
         if (targetCount <= 0) {
@@ -162,14 +165,14 @@ object RealTimeMonitoring {
         
         when (pageConfig.interstitialMode.lowercase()) {
             "cooldown" -> {
-                executeCooldownMode(context, pageState, pageConfig, adStrategy, targetCount)
+                executeCooldownMode(context, pageState, pageConfig, adStrategy, targetCount, showLoading)
             }
             "concurrent" -> {
-                executeConcurrentMode(context, pageState, pageConfig, targetCount)
+                executeConcurrentMode(context, pageState, pageConfig, targetCount, showLoading)
             }
             else -> {
                 XuLog.w("Unknown interstitial mode: ${pageConfig.interstitialMode}, using cooldown as default")
-                executeCooldownMode(context, pageState, pageConfig, adStrategy, targetCount)
+                executeCooldownMode(context, pageState, pageConfig, adStrategy, targetCount, showLoading)
             }
         }
     }
@@ -183,15 +186,17 @@ object RealTimeMonitoring {
      * @param pageConfig 页面广告配置
      * @param adStrategy 全局广告策略
      * @param targetCount 目标广告次数
+     * @param showLoading 是否显示加载Loading弹窗
      */
     private fun executeCooldownMode(
         context: Context,
         pageState: PageAdState,
         pageConfig: AdPageConfig,
         adStrategy: AdStrategy,
-        targetCount: Int
+        targetCount: Int,
+        showLoading: Boolean
     ) {
-        XuLog.d("Executing cooldown mode for page: ${pageState.pageName}, target count: $targetCount")
+        XuLog.d("Executing cooldown mode for page: ${pageState.pageName}, target count: $targetCount, showLoading: $showLoading")
         
         val cooldownSeconds = adStrategy.interstitialCooldown
         
@@ -209,7 +214,7 @@ object RealTimeMonitoring {
             }
             
             // 展示插屏广告，并在广告关闭后开始计时
-            showInterstitialAdWithCloseCallback(context, pageState.pageName, 
+            showInterstitialAdWithCloseCallback(context, pageState.pageName, showLoading,
                 onShow = { success ->
                     if (success) {
                         pageState.interstitialExecutedCount++
@@ -257,14 +262,16 @@ object RealTimeMonitoring {
      * @param pageState 页面状态
      * @param pageConfig 页面广告配置
      * @param targetCount 目标广告次数
+     * @param showLoading 是否显示加载Loading弹窗
      */
     private fun executeConcurrentMode(
         context: Context,
         pageState: PageAdState,
         pageConfig: AdPageConfig,
-        targetCount: Int
+        targetCount: Int,
+        showLoading: Boolean
     ) {
-        XuLog.d("Executing concurrent mode for page: ${pageState.pageName}, target count: $targetCount")
+        XuLog.d("Executing concurrent mode for page: ${pageState.pageName}, target count: $targetCount, showLoading: $showLoading")
         
         var currentCount = 0
         
@@ -283,7 +290,7 @@ object RealTimeMonitoring {
             currentCount++
             
             // 加载广告
-            showInterstitialAd(context, pageState.pageName) { success ->
+            showInterstitialAd(context, pageState.pageName, showLoading) { success ->
                 if (success) {
                     pageState.interstitialExecutedCount++
                     XuLog.d("Concurrent interstitial ad $adIndex shown for page: ${pageState.pageName}, total count: ${pageState.interstitialExecutedCount}")
@@ -314,10 +321,11 @@ object RealTimeMonitoring {
      * 
      * @param context Android上下文
      * @param pageName 页面名称（用于日志）
+     * @param showLoading 是否显示加载Loading弹窗
      * @param callback 广告展示结果回调
      */
-    private fun showInterstitialAd(context: Context, pageName: String, callback: (Boolean) -> Unit) {
-        XuLog.d("Attempting to load and show interstitial ad for page: $pageName")
+    private fun showInterstitialAd(context: Context, pageName: String, showLoading: Boolean, callback: (Boolean) -> Unit) {
+        XuLog.d("Attempting to load and show interstitial ad for page: $pageName, showLoading: $showLoading")
         
         // 检查Context是否为Activity类型
         if (context !is android.app.Activity) {
@@ -330,6 +338,7 @@ object RealTimeMonitoring {
             // 调用插屏广告管理器加载并展示广告
             InterstitialAdManager.loadInterstitialFullAd(
                 context,
+                showLoading = showLoading,
                 onShow = {
                     XuLog.d("Interstitial ad shown for page: $pageName")
                     callback(true)
@@ -353,16 +362,18 @@ object RealTimeMonitoring {
      * 
      * @param context Android上下文
      * @param pageName 页面名称（用于日志）
+     * @param showLoading 是否显示加载Loading弹窗
      * @param onShow 广告展示回调
      * @param onClosed 广告关闭回调
      */
     private fun showInterstitialAdWithCloseCallback(
         context: Context, 
         pageName: String, 
+        showLoading: Boolean,
         onShow: (Boolean) -> Unit,
         onClosed: () -> Unit
     ) {
-        XuLog.d("Attempting to load and show interstitial ad with close callback for page: $pageName")
+        XuLog.d("Attempting to load and show interstitial ad with close callback for page: $pageName, showLoading: $showLoading")
         
         // 检查Context是否为Activity类型
         if (context !is android.app.Activity) {
@@ -375,6 +386,7 @@ object RealTimeMonitoring {
             // 调用插屏广告管理器加载并展示广告
             InterstitialAdManager.loadInterstitialFullAd(
                 context,
+                showLoading = showLoading,
                 onShow = {
                     XuLog.d("Interstitial ad shown for page: $pageName")
                     onShow(true)

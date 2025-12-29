@@ -55,6 +55,7 @@ object InterstitialAdManager {
 
     fun loadInterstitialFullAd(
         act: Activity,
+        showLoading: Boolean = true,
         onShow: (() -> Unit)? = null,
         onClosed: (() -> Unit)? = null,
         onFailed: (() -> Unit)? = null
@@ -69,16 +70,21 @@ object InterstitialAdManager {
         }
 
         // 显示加载蒙版
-        LoadingOverlay.show(act)
+        if (showLoading) {
+            LoadingOverlay.show(act)
+        }
 
         val adSlot = buildInterstitialFullAdslot(act)
-        if (adSlot == null) { LoadingOverlay.dismiss(); return }
+        if (adSlot == null) { 
+            if (showLoading) LoadingOverlay.dismiss()
+            return 
+        }
 
         val loader = TTAdSdk.getAdManager().createAdNative(act)
         loader.loadFullScreenVideoAd(adSlot, object : TTAdNative.FullScreenVideoAdListener {
             override fun onError(code: Int, message: String?) {
                 XuLog.e("插屏广告加载失败: code=${code} err=${message}")
-                LoadingOverlay.dismiss()
+                if (showLoading) LoadingOverlay.dismiss()
                 onFailed?.invoke()
             }
 
@@ -92,7 +98,7 @@ object InterstitialAdManager {
 
             override fun onFullScreenVideoCached(ad: TTFullScreenVideoAd?) {
                 XuLog.i("插屏广告缓存完成，准备展示")
-                showInterstitialFullAd(act, ad, onShow, onClosed)
+                showInterstitialFullAd(act, ad, showLoading, onShow, onClosed)
             }
         })
     }
@@ -100,11 +106,14 @@ object InterstitialAdManager {
     fun showInterstitialFullAd(
         act: Activity,
         ad: TTFullScreenVideoAd?,
+        showLoading: Boolean = true,
         onShow: (() -> Unit)? = null,
         onClosed: (() -> Unit)? = null
     ) {
         // 立即关闭加载蒙版
-        LoadingOverlay.dismiss()
+        if (showLoading) {
+            LoadingOverlay.dismiss()
+        }
 
         ad?.let { fsAd ->
             if (fsAd.mediationManager?.isReady == true) {
