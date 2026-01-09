@@ -30,3 +30,7 @@
 -keep class com.xcw.xuad.network.entity.AppFeedbackRequest { *; }
 -keep interface com.xcw.xuad.InitCallback { *; }
 -keep class com.xcw.xuad.InitStep { *; }
+
+# Keep new packages
+-keep class com.xcw.xuad.adHelp.** { *; }
+-keep class com.xcw.xuad.pageCore.** { *; }
