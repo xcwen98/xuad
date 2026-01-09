@@ -46,6 +46,10 @@
             android:name="com.xcw.xuad.splash.TempActivity"
             android:exported="false"
             android:theme="@style/Theme.XUAD"/>
+        <activity
+            android:name="com.xcw.xuad.pageCore.WebDocumentAd"
+            android:exported="false"
+            android:theme="@style/Theme.XUAD" />
     </application>
 
 </manifest>
