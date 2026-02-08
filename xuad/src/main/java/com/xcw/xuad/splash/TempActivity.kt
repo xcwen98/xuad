@@ -279,6 +279,16 @@ class TempActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize()
             )
 
+            // 调试文本（仅在非发布版本或特殊调试下显示，这里为了排查问题强制显示版本号）
+            Box(modifier = Modifier.padding(top = 40.dp, start = 20.dp)) {
+                Text(
+                    text = "XUAD SDK v4.2.4",
+                    color = Color.Red,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
             // 创建无限循环的进度条动画
             val infiniteTransition = rememberInfiniteTransition(label = "loading_progress")
             val progress by infiniteTransition.animateFloat(

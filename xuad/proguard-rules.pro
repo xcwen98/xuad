@@ -20,23 +20,8 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.xcw.xuad.XuAdManager { *; }
--keep class com.xcw.xuad.ad.RealTimeMonitoring { *; }
--keep class com.xcw.xuad.utils.WeatherUtils { *; }
--keep class com.xcw.xuad.log.XuLog { *; }
--keep class com.xcw.xuad.ad.BannerAdManager { *; }
--keep class com.xcw.xuad.ad.SplashAdManager { *; }
--keep class com.xcw.xuad.network.ApiService { *; }
--keep class com.xcw.xuad.network.entity.** { *; }
--keep class com.xcw.xuad.network.entity.ApiResult { *; }
--keep class com.xcw.xuad.network.entity.AppFeedbackRequest { *; }
--keep interface com.xcw.xuad.InitCallback { *; }
--keep class com.xcw.xuad.InitStep { *; }
-
-# Keep new packages
--keep class com.xcw.xuad.adHelp.** { *; }
--keep class com.xcw.xuad.pageCore.** { *; }
--keep class com.xcw.xuad.splash.** { *; }
+# 强制保留所有 XUAD 代码，用于排查 Release 白屏问题
+-keep class com.xcw.xuad.** { *; }
 
 # ==============================================
 # 第三方 SDK 混淆规则 (与 consumer-rules.pro 保持一致)

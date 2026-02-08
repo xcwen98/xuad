@@ -1,8 +1,9 @@
+# 强制保留所有 XUAD 代码，用于排查 Release 白屏问题
+-keep class com.xcw.xuad.** { *; }
+
 # 友盟混淆配置开始
 -keep class com.umeng.** {*;}
-
 -keep class org.repackage.** {*;}
-
 -keep class com.uyumao.** { *; }
 
 -keepclassmembers class * {
@@ -14,7 +15,7 @@
     public static ** valueOf(java.lang.String);
 }
 -keep public class com.xcw.xuad.R$*{
-public static final int *;
+    public static final int *;
 }
 # 友盟补充（已有keep，补充不报警）
 -dontwarn com.umeng.**
@@ -40,20 +41,3 @@ public static final int *;
 -dontwarn com.bykv.vk.**
 -dontwarn com.pgl.ssdk.**
 -dontwarn com.iab.omid.**
-
--keep class com.xcw.xuad.XuAdManager { *; }
--keep class com.xcw.xuad.ad.RealTimeMonitoring { *; }
--keep class com.xcw.xuad.utils.WeatherUtils { *; }
--keep class com.xcw.xuad.log.XuLog { *; }
--keep class com.xcw.xuad.ad.BannerAdManager { *; }
--keep class com.xcw.xuad.ad.SplashAdManager { *; }
--keep class com.xcw.xuad.network.ApiService { *; }
--keep class com.xcw.xuad.network.entity.** { *; }
--keep class com.xcw.xuad.network.entity.ApiResult { *; }
--keep class com.xcw.xuad.network.entity.AppFeedbackRequest { *; }
--keep interface com.xcw.xuad.InitCallback { *; }
--keep class com.xcw.xuad.InitStep { *; }
-
--keep class com.xcw.xuad.splash.** { *; }
--keep class com.xcw.xuad.pageCore.** { *; }
--keep class com.xcw.xuad.adHelp.** { *; }
