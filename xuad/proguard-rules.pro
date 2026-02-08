@@ -25,7 +25,9 @@
 -keep class com.xcw.xuad.utils.WeatherUtils { *; }
 -keep class com.xcw.xuad.log.XuLog { *; }
 -keep class com.xcw.xuad.ad.BannerAdManager { *; }
+-keep class com.xcw.xuad.ad.SplashAdManager { *; }
 -keep class com.xcw.xuad.network.ApiService { *; }
+-keep class com.xcw.xuad.network.entity.** { *; }
 -keep class com.xcw.xuad.network.entity.ApiResult { *; }
 -keep class com.xcw.xuad.network.entity.AppFeedbackRequest { *; }
 -keep interface com.xcw.xuad.InitCallback { *; }
@@ -34,3 +36,4 @@
 # Keep new packages
 -keep class com.xcw.xuad.adHelp.** { *; }
 -keep class com.xcw.xuad.pageCore.** { *; }
+-keep class com.xcw.xuad.splash.** { *; }

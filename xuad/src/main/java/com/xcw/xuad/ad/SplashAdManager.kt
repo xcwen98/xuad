@@ -76,15 +76,20 @@ object SplashAdManager {
     ) {
         if (!XuAdManager.adEnabled()) {
             XuLog.w("广告开关关闭，跳过开屏加载")
+            onFailed?.invoke()
             return
         }
         if (!TTAdManagerHolder.isInitialized()) {
             XuLog.w("TTAdSdk 未初始化成功，跳过开屏加载")
+            onFailed?.invoke()
             return
         }
 
         val adSlot = buildSplashAdslot(act, container)
-        if (adSlot == null) return
+        if (adSlot == null) {
+            onFailed?.invoke()
+            return
+        }
 
         val loader = TTAdSdk.getAdManager().createAdNative(act)
         loader.loadSplashAd(adSlot, object : TTAdNative.CSJSplashAdListener {
@@ -198,7 +203,11 @@ object SplashAdManager {
                 splash.showSplashView(container)
             } else {
                 XuLog.w("开屏容器为空，无法展示")
+                onClosed?.invoke()
             }
+        } ?: run {
+            XuLog.e("展示对象为空，跳过展示")
+            onClosed?.invoke()
         }
     }
 }

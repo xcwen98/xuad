@@ -10,7 +10,7 @@ plugins {
 // 配置所有子项目的group和version
 allprojects {
     group = 'com.xcw'
-    version = '4.2.0'
+    version = '4.2.1'
 }
 
 nexusPublishing {
