@@ -267,9 +267,6 @@ class TempActivity : ComponentActivity() {
             androidx.compose.ui.viewinterop.AndroidView(
                 factory = { ctx ->
                     android.widget.FrameLayout(ctx).apply {
-                        // 设置调试背景色（半透明绿），用于验证容器是否被渲染
-                        // 如果能看到绿色但看不到广告，说明容器在了，是广告View的问题（资源缺失）
-                        setBackgroundColor(android.graphics.Color.parseColor("#3300FF00"))
                         layoutParams = android.view.ViewGroup.LayoutParams(
                             android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                             android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -281,16 +278,6 @@ class TempActivity : ComponentActivity() {
                 },
                 modifier = Modifier.fillMaxSize()
             )
-
-            // 调试文本（仅在非发布版本或特殊调试下显示，这里为了排查问题强制显示版本号）
-            Box(modifier = Modifier.padding(top = 40.dp, start = 20.dp)) {
-                Text(
-                    text = "XUAD SDK v4.2.5 (DebugMode)",
-                    color = Color.Red,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
 
             // 创建无限循环的进度条动画
             val infiniteTransition = rememberInfiniteTransition(label = "loading_progress")
