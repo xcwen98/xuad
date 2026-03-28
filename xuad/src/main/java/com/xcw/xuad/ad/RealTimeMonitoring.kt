@@ -1,6 +1,5 @@
 package com.xcw.xuad.ad
 
-import android.app.Activity
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
@@ -57,6 +56,9 @@ object RealTimeMonitoring {
             return
         }
         
+        val effectiveShowLoading = adStrategy.showLoading
+        XuLog.d("Effective interstitial loading flag for page: $pageIdentifier, strategy=${adStrategy.showLoading}, caller=$showLoading, final=$effectiveShowLoading")
+
         // 初始化或更新页面状态
         val pageState = pageAdStates.getOrPut(pageIdentifier) { 
             PageAdState(pageIdentifier)
@@ -77,7 +79,7 @@ object RealTimeMonitoring {
         
         // 执行插屏广告策略（仅在全局启用时）
         if (adStrategy.globalInterstitialEnabled) {
-            executeInterstitialStrategy(context, pageState, pageConfig, adStrategy, showLoading)
+            executeInterstitialStrategy(context, pageState, pageConfig, adStrategy, effectiveShowLoading)
         } else {
             XuLog.d("Global interstitial ads disabled, skipping interstitial for page: $pageIdentifier")
         }

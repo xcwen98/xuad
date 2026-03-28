@@ -78,13 +78,13 @@ object TTAdManagerHolder {
 
     private fun getTTCustomController(): TTCustomController {
         return object : TTCustomController() {
-            override fun isCanUseLocation(): Boolean = true
-            override fun isCanUsePhoneState(): Boolean = true
-            override fun isCanUseWifiState(): Boolean = true
-            override fun isCanUseWriteExternal(): Boolean = true
+            override fun isCanUseLocation(): Boolean = false
+            override fun isCanUsePhoneState(): Boolean = false
+            override fun isCanUseWifiState(): Boolean = false
+            override fun isCanUseWriteExternal(): Boolean = false
             override fun isCanUseAndroidId(): Boolean = true
 
-            override fun getMediationPrivacyConfig(): MediationPrivacyConfig? {
+            override fun getMediationPrivacyConfig(): MediationPrivacyConfig {
                 return object : MediationPrivacyConfig() {
                     override fun isLimitPersonalAds(): Boolean = false
                     override fun isProgrammaticRecommend(): Boolean = true
@@ -98,7 +98,7 @@ object TTAdManagerHolder {
             val pm = context.packageManager
             val ai = pm.getApplicationInfo(context.packageName, 0)
             val label = ai.loadLabel(pm)
-            label?.toString() ?: ""
+            label.toString()
         } catch (e: Exception) {
             // 兜底：读取应用标签失败时使用包名
             XuLog.w("获取应用名称失败：${e.message}")

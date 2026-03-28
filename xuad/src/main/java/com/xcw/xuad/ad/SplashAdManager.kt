@@ -25,7 +25,7 @@ object SplashAdManager {
         val model = Build.MODEL ?: ""
         val os = "Android ${Build.VERSION.RELEASE ?: ""}"
         val sdk = "SDK ${Build.VERSION.SDK_INT}"
-        val info = "brand=" + brand + "; model=" + model + "; os=" + os + "; sdk=" + sdk
+        val info = "brand=$brand; model=$model; os=$os; sdk=$sdk"
         return info.take(1024)
     }
 
@@ -39,7 +39,7 @@ object SplashAdManager {
         )
         kotlin.concurrent.thread(start=true) {
             runCatching { ApiService.record(req) }
-                .onFailure { XuLog.e("record 接口调用失败: ${it}") }
+                .onFailure { XuLog.e("record 接口调用失败: $it") }
         }
     }
 

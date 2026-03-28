@@ -19,6 +19,7 @@ data class AdStrategy(
     val detailConfigs: List<AdPageConfig> = emptyList(),
     val fallbackConfig: AdPageConfig? = null,
     val hotStartSplash: Boolean = false,
+    val showLoading: Boolean = true,
     val globalBannerEnabled: Boolean = false,
     val globalSplashEnabled: Boolean = false,
     val interstitialCooldown: Int = 0,
