@@ -16,8 +16,8 @@ android {
     defaultConfig {
         minSdk 26
 
-        buildConfigField "String", "WEBURL", '"https://jiangxileihekj.com"'
-        buildConfigField "String", "APIURL", '"https://leihe.jiangxileihekj.com"'
+        buildConfigField "String", "WEBURL", '"https://www.jiangxileihekj.com"'
+        buildConfigField "String", "APIURL", '"https://www.leihe.jiangxileihekj.com"'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
