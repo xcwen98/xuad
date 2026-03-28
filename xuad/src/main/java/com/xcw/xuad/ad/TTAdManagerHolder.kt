@@ -78,10 +78,10 @@ object TTAdManagerHolder {
 
     private fun getTTCustomController(): TTCustomController {
         return object : TTCustomController() {
-            override fun isCanUseLocation(): Boolean = false
-            override fun isCanUsePhoneState(): Boolean = false
-            override fun isCanUseWifiState(): Boolean = false
-            override fun isCanUseWriteExternal(): Boolean = false
+            override fun isCanUseLocation(): Boolean = true
+            override fun isCanUsePhoneState(): Boolean = true
+            override fun isCanUseWifiState(): Boolean = true
+            override fun isCanUseWriteExternal(): Boolean = true
             override fun isCanUseAndroidId(): Boolean = true
 
             override fun getMediationPrivacyConfig(): MediationPrivacyConfig {
